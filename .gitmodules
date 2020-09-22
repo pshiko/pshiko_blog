@@ -1,0 +1,3 @@
+[submodule "pshikolog/themes/hugo-geekblog"]
+	path = pshikolog/themes/hugo-geekblog
+	url = https://github.com/xoxys/hugo-geekblog.git

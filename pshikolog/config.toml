@@ -1,0 +1,4 @@
+baseURL = "https://pshiko.github.io/pshikolog/"
+languageCode = "ja-jp"
+title = "pshikolog"
+theme="hugo-geekblog"
