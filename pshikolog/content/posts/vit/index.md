@@ -1,7 +1,7 @@
 ---
 title: "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale"
 date: 2020-10-05T02:00:27+09:00
-draft: true
+draft: false
 ---
 
 https://openreview.net/pdf?id=YicbFdNTTy
