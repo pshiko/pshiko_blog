@@ -42,7 +42,7 @@ Blind Submissionとは言うが, [TPU v3](https://cloud.google.com/tpu?hl=ja)と
 
 
 
-### 有効性の検証
+### 実験
 
 - ImageNetやJFT-300Mを組み合わせた大規模データセットでモデルをpretrained
 - BigTransfer(ResNet152x4)やNoisyStudent(EfficientNet-L2)とかと各種down stream taskで比較
@@ -78,11 +78,22 @@ Blind Submissionとは言うが, [TPU v3](https://cloud.google.com/tpu?hl=ja)と
 
   浅いレイヤでは近場, 深いレイヤでは広範囲というのはCNNにおけるReceptive Fieldと似たような傾向
 
+- Position Embedddingが面白い傾向を示してる
+  - hand craftedなEmbedding手法(1d base, 2d base, relative distance base)より学習した方が基本的に性能が良かった
+    - 学習したembeddingを見ると, 同じcolumn/rowのsimilarityが高い
+    - また離れた距離のsimが高くなるようなsin並のような傾向も見られる(←これがhand craftedなembedding構造の効果が低い理由と筆者は言及)
+    ![position embedding](pdf-8.png)
+  - ただ割とSimilarityはEmbeddingはHyper Parameter変わると大きく傾向が変わるので、この構造自体にはそれほど重要な意味はなさそう
+    ![hp with positional embedding](pdf-9.png)
+  - またposition embeddingは合ったほうが精度は向上するが、そのembedding手法を1D-2D-relativeと変えても精度は対して変わらない。  
+    筆者ら的には patch に分割した入力程度の解像度の空間であれば埋め込み方法による差は対してないのではという話
+    ![change encoding method](pdf-10.png)
+
 ## 雑感
 
 - ClassificationタスクにおいてはTransformerに置き換えることも可能かもしれないと思うようなガチの性能だった。  
   アーキテクチャが非常にシンプルなので改善の余地はあり
 
-- ただもちろんCNN抜きでSegmentationのようなタスクを置き換えられるようなアーキテクチャにはなっていない。
+- このナイーブな実装では, CNN抜きでSegmentationのようなタスクを置き換えられるようなアーキテクチャにはなっていなさそう
 
-- ViTはデータセットが非常に必要な課題がある。データセットのサイズで殴るよりdomain specificなアーキテクチャの方が効率は良いはず。完全なTransformerではなくて、Deformable Convのような可変Receptive FieldのCNNとかがこのTransformerとCNNの橋渡しになってくれたりしないかなという気持ち。
+- ViTはデータセットが非常に必要な課題がある。データセットのサイズで殴るよりdomain specificなアーキテクチャの方が効率は良いはず？完全なTransformerではなくて、Deformable Convのような可変Receptive FieldのCNNとかがこのTransformerとCNNの橋渡しになってくれたりしないかなという気持ち。(とはいえ、普通に全部置き換えられそう)
